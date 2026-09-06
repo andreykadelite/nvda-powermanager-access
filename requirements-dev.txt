@@ -1,0 +1,4 @@
+configobj==5.0.9
+Markdown==3.10.3
+pytest==9.1.1
+ruff==0.16.6

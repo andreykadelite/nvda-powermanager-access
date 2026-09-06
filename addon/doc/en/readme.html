@@ -1,0 +1,154 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>PowerManagerII Access</title><style>body{max-width:65em;margin:2em auto;padding:0 1em;line-height:1.6;font-family:sans-serif}table{border-collapse:collapse}th,td{border:1px solid #777;padding:.5em;text-align:left}a{color:#034ea2}pre{white-space:pre-wrap}</style></head><body><h1>User guide</h1>
+<p><a href="../ru/readme.html">Русский</a></p>
+<p>PowerManagerII Access works with the Russian edition of Richcomm PowerManagerII 4.1 revision 646. The add-on's labels and dialogs are Russian, even when NVDA uses another language. This guide gives English explanations and the Russian names you will hear.</p>
+<h2>Installation</h2>
+<p>Install NVDA and PowerManagerII first. Open <code>powerManagerAccess-1.0.0.nvda-addon</code>, confirm installation in NVDA, and restart NVDA. No separate Python installation or runtime libraries are needed.</p>
+<p>If you used a private development build numbered 2.x, install 1.0.0 manually. It is the first public release and keeps the completed accessibility work. Its lower number does not indicate older functionality. Do not run two copies of the add-on together.</p>
+<p>The <code>NVDA</code> key below means Insert or Caps Lock, according to your NVDA settings.</p>
+<h2>Read a screen and choose a tab</h2>
+<p>Open PowerManagerII and press <code>F6</code>. The add-on opens a window with three tabs and places focus on the current tab's contents. Up and Down read its rows.</p>
+<table>
+<thead>
+<tr>
+<th>Tab you hear</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Состояние ИБП</td>
+<td>UPS status: connection, mains supply, battery, faults, self-test, operating mode, load and charge</td>
+</tr>
+<tr>
+<td>Текущие измерения</td>
+<td>Current measurements and states reported in the source table, with names and units</td>
+</tr>
+<tr>
+<td>График измерений</td>
+<td>An explanation of the graph and buttons for current measurements and saved history</td>
+</tr>
+</tbody>
+</table>
+<p><code>Control+Tab</code> focuses the next tab header; <code>Control+Shift+Tab</code> goes back. Arrow keys work on headers too. Focus alone leaves the open page unchanged. Press <code>Enter</code>, numpad Enter or <code>Space</code> to open the focused tab. <code>Tab</code> then moves to its contents.</p>
+<p>For example, while reading UPS status, press <code>Control+Tab</code> to focus «Текущие измерения». Press <code>Enter</code> and then <code>Tab</code> to read measurements. If you press Tab without Enter, you return to the status data that is still open. The window title and list label identify the open page.</p>
+<p><code>F6</code> switches between the open page's contents and its selected header. <code>Home</code> and <code>End</code> focus the first and last headers in the add-on's tab windows. Pressing Enter on an already open tab does not reload it. Use <code>F5</code> to refresh readings; the selected row is preserved. The caption above the list gives the reading time.</p>
+<p><code>Escape</code> closes the tab window and returns to the selected screen in PowerManagerII. Its original screen buttons also open these tabs with Enter or Space. The settings, notification and command-panel tabs use the same manual activation rule. In the original dialogs, Tab visits the selected header as one stop and then goes to the open section's fields.</p>
+<h2>Keyboard reference</h2>
+<p>The shortcuts with the NVDA key work in the original PowerManagerII window, not in the separate windows hosted by NVDA.</p>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVDA+Alt+F1</td>
+<td>Open the extra panel with status, commands, source-window controls and help</td>
+</tr>
+<tr>
+<td>NVDA+Alt+F2</td>
+<td>Speak UPS status</td>
+</tr>
+<tr>
+<td>NVDA+Alt+F3</td>
+<td>Open a text report of UPS status</td>
+</tr>
+<tr>
+<td>NVDA+Alt+F4</td>
+<td>Read the current window's text and tables</td>
+</tr>
+<tr>
+<td>NVDA+Alt+F5</td>
+<td>Turn status-change announcements on or off</td>
+</tr>
+<tr>
+<td>NVDA+Alt+F6</td>
+<td>Open the UPS status tab</td>
+</tr>
+<tr>
+<td>NVDA+Alt+F7</td>
+<td>Open current measurements</td>
+</tr>
+<tr>
+<td>NVDA+Alt+F8</td>
+<td>Open measurement history; press again within history to read text records</td>
+</tr>
+<tr>
+<td>F6</td>
+<td>Read the open screen; in the tab window, move between the header and contents</td>
+</tr>
+<tr>
+<td>F10 or Applications</td>
+<td>Open the main menu in the original window; F10 also works in the tab window</td>
+</tr>
+<tr>
+<td>F1</td>
+<td>Read help for the current window</td>
+</tr>
+<tr>
+<td>Tab / Shift+Tab</td>
+<td>Move to the next / previous available control</td>
+</tr>
+<tr>
+<td>Control+Tab / Control+Shift+Tab</td>
+<td>Focus the next / previous tab header without opening it</td>
+</tr>
+<tr>
+<td>Enter, numpad Enter or Space</td>
+<td>Open the focused tab or activate a button or checkbox</td>
+</tr>
+<tr>
+<td>Arrow keys on a radio button</td>
+<td>Choose another option in its group</td>
+</tr>
+<tr>
+<td>Escape</td>
+<td>Close a dialog without pressing its save button</td>
+</tr>
+<tr>
+<td>F5 in the add-on's reading windows</td>
+<td>Refresh data</td>
+</tr>
+<tr>
+<td>Control+PageDown / Control+PageUp in text history</td>
+<td>Read the next / previous 50 records</td>
+</tr>
+</tbody>
+</table>
+<p>In tab windows, Control+PageDown and Control+PageUp also move between headers without activation. Lists, date fields, calendars and combo boxes keep their normal Windows keyboard behavior. For dates, Left and Right choose a part; Up and Down change it. <code>Alt+Down</code> opens a list or calendar. Escape first closes an expanded control.</p>
+<p>NVDA's <code>Control+Alt+Arrow</code> commands read table cells. You can change add-on shortcuts in NVDA's Input Gestures dialog under PowerManagerII while the original program is focused. The add-on also handles a TabReporter conflict in recognized PowerManagerII windows.</p>
+<h2>Settings and notifications</h2>
+<p>Use F10 to open «Система» (System). Settings have four sections: connection, shutdown, critical events and history recording. Notifications have five: network messages, SMS, email, sound and popup messages.</p>
+<p>Choose a header with Control+Tab or the arrow keys, open it with Enter or Space, then use Tab for its fields. Hidden and disabled controls are skipped. The extra panel's «Элементы окна» page lists disabled controls with an explanation, but prevents moving focus to them.</p>
+<p>For a critical event, choose the computer action before setting its conditions and delays. In sound notifications, select an event before choosing a sound file. Recipient fields are named for the selected channel, such as email address or mobile number. Password fields are omitted from text reports.</p>
+<p>Save changes with the program's own save buttons. Escape closes editing without pressing Save. Merely changing a tab does not save settings.</p>
+<h2>UPS schedules</h2>
+<p>The vendor's «Блок-схема ИБП» menu item opens a task schedule. The add-on calls it «Расписание задач ИБП (Блок-схема ИБП)».</p>
+<ol>
+<li>Choose a task using arrows on its radio-button group: short test, test until low battery, timed test, shutdown, or shutdown followed by restart.</li>
+<li>Use Tab to reach the fields for that task. Restart tasks have their own day and time fields.</li>
+<li>Review the computer-shutdown checkbox, repetition, start time, dates or weekdays.</li>
+<li>Move to «Добавить задачу» to add the task and review the confirmation. Select a saved row before editing or deleting an existing task.</li>
+</ol>
+<p>Enter inside a schedule field does not add a task. The add-on asks you to use the explicit Add or Edit button. These are schedules for real equipment; confirmed tasks can later run automatically.</p>
+<h2>History and graphs</h2>
+<p>Measurement and event history remain readable in the original tables. Their dialogs provide filters, dates, refresh controls and separate deletion windows.</p>
+<p><code>NVDA+Alt+F8</code> opens measurement history from the main window. Press it again in history to read text records in pages of 50. Each page includes units and the minimum and maximum of its numeric readings. Statistics describe that page, not the entire database. The history filter selects the period. In graph mode, this command first restores the table.</p>
+<p>Page buttons are disabled at the beginning and end. The general window report from <code>NVDA+Alt+F4</code> reads at most the first 100 rows of each table. Other rows remain available in the original table; measurement history also has the paged reader.</p>
+<p>The current graph is available in the View menu. Its ActiveX component does not expose numeric curve points to NVDA. The graph tab offers «Читать текущие измерения» (read current measurements) and «Открыть историю измерений» (open saved history). Saved records have their own recording interval and are not every point in the live graph. Reopening the selected graph does not restart it.</p>
+<h2>Confirmations and errors</h2>
+<p>Supported test, power, schedule, deletion, UPS beeper and event-clear commands require confirmation when invoked through the add-on. No is selected by default. The checks also cover Enter in a power-delay field and activation through NVDA object navigation.</p>
+<p>Before dispatch, the add-on checks that the window, control and reviewed parameters still match. A changed selection or parameter cancels the request. Edit and Delete require a selected record. Rapid duplicate button activation is suppressed.</p>
+<p>An open dialog can block an incompatible main-window command. Missing controls and response timeouts produce an explanation. Later keyboard input cancels pending focus restoration, so it does not undo your next navigation step. The add-on's confirmations do not govern commands sent directly by mouse or other software.</p>
+<h2>Status-change announcements</h2>
+<p><code>NVDA+Alt+F5</code> enables a check every five seconds. It announces changes in displayed connection, mains, battery and other statuses, rather than every voltage fluctuation. Press it again to stop. Closing PowerManagerII or restarting NVDA also stops monitoring.</p>
+<p>When the connection is not confirmed, numeric readings are marked unavailable. A reading error is announced once, followed by a separate recovery message when reading works again. The add-on reads the program's data; it does not check the physical accuracy of the UPS sensors.</p>
+<h2>Help and saved files</h2>
+<p>The vendor's help opens Windows HTML Help. F6 moves between the contents and article; arrows choose a topic; Alt+F4 closes help. The tested vendor help is mostly English. F1 in PowerManagerII opens the add-on's Russian help.</p>
+<p>«Сохранённые файлы» opens Richcomm Appinfo. The add-on names its two lists, empty rows and Close button. Tab moves between them, arrows select records, F1 reads help and Escape closes the window. Restoring real saved documents has not been tested.</p>
+<h2>Troubleshooting</h2>
+<p>If a main-window command is blocked, close the open dialog with Escape and try again. If reading fails, check that PowerManagerII still shows a connection and press F5. Do not change a working UPS connection just to test accessibility.</p>
+<p>For an unrecognized control or a focus problem, include your program, NVDA and Windows versions, the exact keys pressed and the words NVDA spoke in a bug report. Remove passwords, recipient addresses and private log entries before attaching diagnostics.</p>
+<p>See <a href="testing.html">test coverage</a> for the verified versions and limits, or the <a href="development.html">developer guide</a> to build the add-on.</p></body></html>

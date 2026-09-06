@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+research/
+dist/
+*.nvda-addon
+.env
+.env.*
+!.env.example
+# Local inspection and live-test tools contain workstation-specific paths.
+/tools/*
+!/tools/build.py
+!/tools/bootstrap.ps1
+!/tools/check_docs.py
+!/tools/publish.ps1

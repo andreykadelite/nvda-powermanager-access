@@ -1,0 +1,51 @@
+name: Build and test
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.14']
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+      - run: python -m ruff check addon tests tools/build.py tools/check_docs.py
+      - run: python tools/check_docs.py
+      - run: python tools/build.py
+      - name: Check reproducible archives
+        shell: pwsh
+        run: |
+          $before = Get-Content dist/SHA256SUMS.txt -Raw
+          python -O tools/build.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ($before -ne (Get-Content dist/SHA256SUMS.txt -Raw)) {
+            throw 'Repeated build changed the archives'
+          }
+      - name: Check generated documentation
+        run: git diff --exit-code -- addon/doc addon/LICENSE.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: matrix.python-version == '3.11'
+        with:
+          name: powerManagerAccess
+          path: |
+            dist/*.nvda-addon
+            dist/*-source.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14

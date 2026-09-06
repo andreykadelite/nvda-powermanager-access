@@ -1,0 +1,31 @@
+name: Bug report (English)
+description: Report a reading, navigation or build problem.
+title: '[Bug] '
+labels: [bug]
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Add-on, NVDA, PowerManagerII (including language) and Windows.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Name the window and give the exact keys you pressed.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual result
+      description: Include what NVDA spoke and whether focus moved or a different tab opened.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Additional details
+      description: Other add-ons or relevant errors. Remove credentials, recipient addresses and private log entries.

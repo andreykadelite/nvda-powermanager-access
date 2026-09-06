@@ -1,0 +1,31 @@
+name: Ошибка (русский)
+description: Проблема с чтением, навигацией или сборкой.
+title: '[Ошибка] '
+labels: [bug]
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Версии
+      description: Дополнение, NVDA, PowerManagerII с языком интерфейса и Windows.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Как повторить
+      description: Назовите окно и перечислите точные нажатия клавиш.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Ожидаемый и полученный результат
+      description: Что произнесла NVDA, куда перешёл фокус и открылась ли другая вкладка.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Дополнительные сведения
+      description: Другие дополнения или сообщения об ошибке. Удалите пароли, адреса получателей и личные записи журналов.

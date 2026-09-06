@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>PowerManagerII Access</title><style>body{max-width:65em;margin:2em auto;padding:0 1em;line-height:1.6;font-family:sans-serif}table{border-collapse:collapse}th,td{border:1px solid #777;padding:.5em;text-align:left}a{color:#034ea2}pre{white-space:pre-wrap}</style></head><body><h1>Developer guide</h1>
+<p><a href="../ru/development.html">Русский</a> | <a href="readme.html">User guide</a></p>
+<h2>Requirements</h2>
+<p>Build and test on Windows with Python 3.11 or later and Git. The tested NVDA runtime uses 32-bit Python 3.11; keep add-on code compatible with that version. The development environment used Python 3.14.7. NVDA supplies wxPython and its own modules at runtime, so do not install a separate wxPython into NVDA.</p>
+<p><code>requirements-dev.txt</code> pins four packages: ConfigObj for the manifest, Markdown for documentation, pytest for tests and Ruff for code checks. PowerManagerII and NVDA are needed for live testing, but not for the unit tests or build. GitHub CLI is only needed to publish from the command line.</p>
+<h2>Set up and build</h2>
+<p>From the repository root in PowerShell:</p>
+<pre><code class="language-powershell">.\tools\bootstrap.ps1
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m ruff check addon tests tools/build.py tools/check_docs.py
+.\.venv\Scripts\python.exe tools/check_docs.py
+.\.venv\Scripts\python.exe tools/build.py
+</code></pre>
+<p>If PowerShell blocks scripts, use <code>python -m venv .venv</code> and then <code>.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt</code>. No execution-policy change is required.</p>
+<p>The build writes three files in <code>dist</code>: the <code>.nvda-addon</code> installer, a source ZIP and <code>SHA256SUMS.txt</code>. The installer includes Python source, the control map, the license and offline documentation in both languages. Users need only the installer.</p>
+<p>ZIP entries use a fixed timestamp and sorted paths, so identical input files produce identical archives in the same build environment. The builder checks Python 3.11 syntax, manifest fields, archive contents and ZIP integrity. Run <code>.\.venv\Scripts\python.exe -O tools/build.py</code> in the same environment to verify that checks also work when Python assertions are disabled.</p>
+<h2>Code layout</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>addon/appModules/powermanager/__init__.py</code></td>
+<td>NVDA events, gestures, control overlays and command checks</td>
+</tr>
+<tr>
+<td><code>native.py</code></td>
+<td>Win32 window discovery and bounded messages to the program</td>
+</tr>
+<tr>
+<td><code>model.py</code>, <code>views.py</code>, <code>reports.py</code></td>
+<td>Status, current readings and history text</td>
+</tr>
+<tr>
+<td><code>labels.py</code>, <code>dialog_map.json</code></td>
+<td>Control names, dialog signatures and navigation order</td>
+</tr>
+<tr>
+<td><code>manual_tabs.py</code>, <code>view_dialog.py</code>, <code>dialogs.py</code></td>
+<td>Accessible reading windows and manual tab activation</td>
+</tr>
+<tr>
+<td><code>help.py</code></td>
+<td>Context help spoken by the add-on</td>
+</tr>
+<tr>
+<td><code>addon/appModules/appinfo.py</code></td>
+<td>Richcomm's separate saved-files window</td>
+</tr>
+<tr>
+<td><code>docs/en</code>, <code>docs/ru</code></td>
+<td>Documentation sources</td>
+</tr>
+<tr>
+<td><code>tests</code></td>
+<td>Unit tests with NVDA stubs and mocked program controls</td>
+</tr>
+</tbody>
+</table>
+<p>The paths without a directory prefix are under <code>addon/appModules/powermanager</code>. The add-on reads windows in the recognized PowerManagerII process. It does not talk directly to the UPS hardware or edit the vendor's configuration files.</p>
+<h2>Change navigation safely</h2>
+<p>Keep a tab's focused header separate from its selected page. Arrow keys and Control+Tab must not issue a page command. Enter and Space commit the choice. Tab goes to the open page, including when focus was on an inactive header.</p>
+<p>Delayed focus work must respect later user input, the foreground window and the actual Windows focus. Do not set a guessed NVDA focus to hide a failure in Windows. The manual notebook uses <code>TCS_BUTTONS</code> and <code>TCM_SETCURFOCUS</code> so native focus and selection can differ.</p>
+<p>Match dialog signatures before naming or activating controls. Keep timeouts and bounds on table reads. Never expose old hidden values as fresh measurements; require confirmed connection status before treating numeric readings as available.</p>
+<p>Power, self-test, schedule and deletion actions must preserve the confirmation path and recheck the reviewed parameters. Unit tests mock dispatch; do not connect test code to real equipment to exercise the positive branch.</p>
+<h2>Test a change</h2>
+<p>Run the unit tests and code checks first. Build the installer and install it in a separate NVDA test profile where possible. Keep the running NVDA log available to investigate exceptions, but remove private content before sharing it.</p>
+<p>Use the manual checklist in <a href="testing.html">test coverage</a>. Test actual key presses and compare NVDA's reported control with the real Windows focus. Walking a list of controls in code does not prove that keyboard navigation works.</p>
+<p>Live inspection scripts and raw logs from the original workstation are intentionally excluded. The public repository includes the unit tests and a manual checklist that can be used on another installation. Do not distribute the vendor's executables, personal configuration, recipient lists or debug hooks.</p>
+<h2>Documentation and translations</h2>
+<p>Edit Markdown under <code>docs/en</code> and <code>docs/ru</code>, then build. The builder creates <code>addon/doc/en</code> and <code>addon/doc/ru</code>; do not edit the generated HTML by hand. Both languages need matching instructions and test limits.</p>
+<p>Version 1.0.0 has Russian runtime labels and context help. English documentation does not imply an English interface. A future interface translation needs NVDA's add-on translation support and live tests for each supported PowerManagerII language.</p>
+<h2>Prepare a release</h2>
+<ol>
+<li>Set the version in <code>addon/manifest.ini</code> and update the release notes, changelog and download filenames in the documentation.</li>
+<li>Run tests, documentation checks and the build. Inspect the source archive and ensure it contains no private files.</li>
+<li>Commit the reviewed files. CI runs on Windows with Python 3.11 and 3.14, then uploads build artifacts for inspection.</li>
+<li>Use <code>tools/publish.ps1</code> to create the public repository if needed, push the commit, wait for CI, tag it and publish the three release files. The script requires an authenticated GitHub CLI and a clean working tree.</li>
+</ol>
+<p>Do not lower an existing public release number. Version 1.0.0 starts the public release history; earlier numbers were local development builds.</p>
+<h2>References</h2>
+<ul>
+<li><a href="https://download.nvaccess.org/releases/2025.3.3/documentation/developerGuide.html">NVDA developer guide for 2025.3.3</a></li>
+<li><a href="https://github.com/nvaccess/nvda/tree/release-2025.3.3">NVDA source for 2025.3.3</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/controls/tcm-setcurfocus">Windows tab focus</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/controls/tab-control-styles">Windows tab styles</a></li>
+</ul></body></html>
